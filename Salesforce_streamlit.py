@@ -1,9 +1,9 @@
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 from simple_salesforce import Salesforce, SalesforceLogin
 from simple_salesforce.exceptions import SalesforceAuthenticationFailed
-
 
 # Streamlit app configuration
 st.set_page_config(page_title="Salesforce Lead Dashboard", layout="wide")
@@ -129,7 +129,7 @@ if st.session_state.logged_in:
         df_leads = st.session_state.lead_data
         
         # Arrange filters horizontally
-        filter_col1, filter_col2, filter_col3,filter_col4 = st.columns(4)
+        filter_col1, filter_col2, filter_col3,filter_col4,filter_col5 = st.columns(5)
         
         with filter_col1:
             # Year selection dropdown
@@ -178,7 +178,18 @@ if st.session_state.logged_in:
             else:
                 filtered_lead_status = selected_lead_status
 
-            
+        with filter_col5:
+            # Year selection dropdown
+            Product = df_leads['Product__c'].dropna().unique()
+            active_product_list=['Call Center Representative','Coding','Insurance Eligibility Specialist',
+                                 'Prior Authorization Coordinator','Referral Specialist','Scribing',
+                                 'Transcription','ScribeRyte AI','Virtual Medical Office Services (VMOS)']
+            Product = [pr if pr in active_product_list else 'Others' for pr in Product]        
+            Product.sort()
+            Product = ['All'] + list(set(Product))  # Convert to string for display
+            selected_Product_status = st.selectbox("Select Product", Product)
+
+                
         df_filtered = df_leads[df_leads['Status'].isin(filtered_lead_status)]
         df_filtered = df_leads.copy()
         
@@ -194,6 +205,8 @@ if st.session_state.logged_in:
         if selected_lead_status != 'All':
             df_filtered = df_filtered[df_filtered['Status'].isin(filtered_lead_status)]
         
+        if selected_Product_status != 'All':
+            df_filtered = df_filtered[df_filtered['Product__c']==selected_Product_status]
 
         # Display charts if data is available
         if not df_filtered.empty:
