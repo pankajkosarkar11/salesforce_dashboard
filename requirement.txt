@@ -1,4 +1,4 @@
 pandas
 streamlit
 simple-salesforce
-plotly
+plotly==5.24.1
