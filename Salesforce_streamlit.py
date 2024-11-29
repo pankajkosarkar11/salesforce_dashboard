@@ -1,13 +1,9 @@
 import streamlit as st
 import pandas as pd
-import plotly
 import plotly.express as px
 from simple_salesforce import Salesforce, SalesforceLogin
 from simple_salesforce.exceptions import SalesforceAuthenticationFailed
 
-st.write("Plotly version:", plotly.__version__)
- 
-print("Plotly version:", plotly.__version__)
 
 # Streamlit app configuration
 st.set_page_config(page_title="Salesforce Lead Dashboard", layout="wide")
