@@ -3,3 +3,4 @@ pandas
 streamlit
 simple-salesforce
 tabulate
+streamlit-aggrid
